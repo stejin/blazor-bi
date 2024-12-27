@@ -17,6 +17,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 //var connection = new SqliteConnection(connectionStringBuilder.ToString());
 
 builder.Services.AddSqliteWasmDbContextFactory<ThingContext>(
-  opts => opts.UseSqlite("Data Source=http://localhost:5120/sample-data/chinook.db"));
+  opts => opts.UseSqlite("Data Source=chinook.db"));
 
 await builder.Build().RunAsync();

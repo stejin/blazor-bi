@@ -6,7 +6,7 @@ namespace blazor_bi.Data
     {
         public ThingContext(DbContextOptions<ThingContext> opts) : base(opts)
         {
-            /*try
+            try
             {
                 FormattableString sql = $"SELECT count(*) from invoices";
                 var r = this.Database.ExecuteSql(sql);
@@ -15,7 +15,7 @@ namespace blazor_bi.Data
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message.ToString());
-            }*/
+            }
         }
 
         public DbSet<Thing> Things { get; set; } = null!;
