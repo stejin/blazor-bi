@@ -1,0 +1,54 @@
+﻿@page "/invoice"
+@using SqliteWasmHelper
+@using blazor_bi.Data
+@inject ISqliteWasmDbContextFactory<ThingContext> Factory
+
+<PageTitle>Invoice</PageTitle>
+
+<h3>Invoice</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        int id = 3;
+
+        try
+        {
+            using var ctx = await Factory.CreateDbContextAsync();
+            //var invoices = ctx.Things;
+            //Console.WriteLine(invoices.First().Id.ToString());
+            ctx.Things.Add(new Thing { Id = 1, Name = "newThing" });
+            await ctx.SaveChangesAsync();
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+        }
+
+        /*using (var connection = new Microsoft.Data.Sqlite.SqliteConnection("Data Source=sample-data/chinook.db"))
+        {
+
+
+            
+
+            await connection.OpenAsync();
+
+            var command = connection.CreateCommand();
+            command.CommandText =
+                    @"
+            SELECT name
+            FROM user
+        WHERE id = $id
+        ";
+            command.Parameters.AddWithValue("$id", id);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var name = reader.GetString(0);
+
+                    Console.WriteLine($"Hello, {name}!");
+                }
+            }
+        }*/
+    }
+}
