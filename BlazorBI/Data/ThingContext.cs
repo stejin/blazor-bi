@@ -6,6 +6,13 @@ namespace blazor_bi.Data
     {
         public ThingContext(DbContextOptions<ThingContext> opts) : base(opts)
         {
+
+        }
+
+        public DbSet<Thing> Things { get; set; } = null!;
+
+        public void Test()
+        {
             try
             {
                 FormattableString sql = $"SELECT count(*) from invoices";
@@ -14,10 +21,8 @@ namespace blazor_bi.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message.ToString());
+                Console.WriteLine(ex.Message);
             }
         }
-
-        public DbSet<Thing> Things { get; set; } = null!;
     }
 }
