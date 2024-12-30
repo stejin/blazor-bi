@@ -67,7 +67,7 @@
 	
   <ItemGroup>
     <Content Update="wwwroot\browserCache.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

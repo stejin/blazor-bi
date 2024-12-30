@@ -1,7 +1,7 @@
 ﻿@page "/invoice"
 @using SqliteWasmHelper
-@using blazor_bi.Data
-@inject ISqliteWasmDbContextFactory<ThingContext> Factory
+@using Data
+@inject ISqliteWasmDbContextFactory<ChinookContext> Factory
 @inject HttpClient Http
 
 <PageTitle>Invoice</PageTitle>
@@ -15,12 +15,8 @@
 
         try {
             using var ctx = await Factory.CreateDbContextAsync();
-            ctx.Test();
-            //var invoices = ctx.Things;
-            //Console.WriteLine(invoices.First().Id.ToString());
-            //ctx.Things.Add(new Thing { Id = 1, Name = "newThing" });
-            //await ctx.SaveChangesAsync();
-
+            var invoices = ctx.Invoices;
+            Console.WriteLine(invoices.Count());
 
             //var stream = await Http.GetStreamAsync("sample-data/chinook.xml");
             //new Microsoft.Data.Sqlite.SqliteBlob()
