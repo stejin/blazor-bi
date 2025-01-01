@@ -1,6 +1,7 @@
 ﻿@page "/invoice"
 @using SqliteWasmHelper
 @using Data
+@using System.Data.Entity
 @inject ISqliteWasmDbContextFactory<ChinookContext> Factory
 @inject HttpClient Http
 
@@ -8,16 +9,50 @@
 
 <h3>Invoice</h3>
 
+@if (invoices == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th aria-label="Items">Items</th>
+                <th aria-label="Items count">Count</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var invoice in invoices)
+            {
+                <tr>
+                    <td>@invoice.InvoiceDate.ToShortDateString()</td>
+                    <td>@invoice.ItemList()</td>
+                    <td>@invoice.InvoiceItems.Count()</td>
+                    <td>@invoice.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 @code {
+
+    private Data.Invoice[]? invoices;
     protected override async Task OnInitializedAsync()
     {
-        int id = 3;
 
         try {
             using var ctx = await Factory.CreateDbContextAsync();
-            var invoices = ctx.Invoices;
-            Console.WriteLine(invoices.Count());
+            invoices = ctx.Invoices.Include(inv => inv.InvoiceItems).Include().ToList();
+            foreach (var invoice in invoices) {
+                invoice.InvoiceItems = ctx.InvoiceItems.Where(i => i.InvoiceId == invoice.InvoiceId).ToList();
+            }
+            //Console.WriteLine(invoices.Count());
 
+/*
             //var stream = await Http.GetStreamAsync("sample-data/chinook.xml");
             //new Microsoft.Data.Sqlite.SqliteBlob()
             using (var connection = new Microsoft.Data.Sqlite.SqliteConnection("Data Source=chinook.db"))
@@ -37,9 +72,12 @@
                         var count = reader.GetInt16(0);
 
                         Console.WriteLine($"Hello, {count}!");
+    using Microsoft.EntityFrameworkCore;
                     }
                 }
-            }
+
+                
+            } */
         }
         catch (Exception ex)
         {
