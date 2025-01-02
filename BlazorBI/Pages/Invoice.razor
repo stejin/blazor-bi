@@ -1,7 +1,7 @@
 ﻿@page "/invoice"
+@using Microsoft.EntityFrameworkCore
 @using SqliteWasmHelper
 @using Data
-@using System.Data.Entity
 @inject ISqliteWasmDbContextFactory<ChinookContext> Factory
 @inject HttpClient Http
 
@@ -46,10 +46,11 @@ else
 
         try {
             using var ctx = await Factory.CreateDbContextAsync();
-            invoices = ctx.Invoices.Include(inv => inv.InvoiceItems).Include().ToList();
-            foreach (var invoice in invoices) {
+            invoices = ctx.Invoices.Include(inv => inv.InvoiceItems).ThenInclude(ii => ii.Track).ToArray();
+
+            /*foreach (var invoice in invoices) {
                 invoice.InvoiceItems = ctx.InvoiceItems.Where(i => i.InvoiceId == invoice.InvoiceId).ToList();
-            }
+            }*/
             //Console.WriteLine(invoices.Count());
 
 /*
